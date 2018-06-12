@@ -43,5 +43,5 @@ $ composer participant add -d '{"$class":"org.acme.airline.participant.ACMENetwo
 
 ### Issue an identity  
 ```sh
-composer identity issue -u johnd -a org.acme.airline.participant.ACMENetworkAdmin#johnd -c admin@airline-network -x
+$ composer identity issue -u johnd -a org.acme.airline.participant.ACMENetworkAdmin#johnd -c admin@airline-network -x
 ```
