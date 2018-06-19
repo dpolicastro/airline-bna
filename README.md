@@ -37,11 +37,26 @@ $ composer-rest-server -c admin@airline-network -n always -w true
 
 ### Creating new participant  
 
+- John Doe (johnd) is the Network Administrator
 ```sh
 $ composer participant add -d '{"$class":"org.acme.airline.participant.ACMENetworkAdmin","participantKey":"johnd","contact":{"$class":"org.acme.airline.participant.Contact","fName":"John","lName":"Doe","email":"john.doe@acmeairline.com"}}' -c admin@airline-network
+```
+
+- Will Smith (wills) works in the Logistics department
+```sh
+$ composer participant add -d '{"$class":"org.acme.airline.participant.ACMEPersonnel","participantKey":"wills","contact":{"$class":"org.acme.airline.participant.Contact","fName":"Will","lName":"Smith","email":"will.smith@acmeairline.com"}, "department":"Logistics"}' -c admin@airline-network
 ```
 
 ### Issue an identity  
 ```sh
 $ composer identity issue -u johnd -a org.acme.airline.participant.ACMENetworkAdmin#johnd -c admin@airline-network -x
+
+$ composer identity issue -u wills -a org.acme.airline.participant.ACMEPersonnel#wills -c admin@airline-network -x
+```
+
+### Import the cards
+```sh
+$ composer card import -f johnd@airline-network.card
+
+$ composer card import -f wills@airline-network.card
 ```

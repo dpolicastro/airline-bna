@@ -11,19 +11,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- rule AllAccess {
-  description: "AllAccess - grant everything to everybody"
-  participant: "org.hyperledger.composer.system.Participant"
-  operation: ALL
-  resource: "org.hyperledger.composer.system.**"
-  action: ALLOW
-}
 
 rule NetworkAdminUser {
     description: "Grant business network administrators full access to user resources"
     participant: "org.hyperledger.composer.system.NetworkAdmin"
     operation: ALL
-    resource: "**"
+    resource: "org.hyperledger.composer.system.*"
     action: ALLOW
 }
 
@@ -31,6 +24,51 @@ rule NetworkAdminSystem {
     description: "Grant business network administrators full access to system resources"
     participant: "org.hyperledger.composer.system.NetworkAdmin"
     operation: ALL
-    resource: "org.hyperledger.composer.system.**"
+    resource: "org.acme.airline.participant.*"
     action: ALLOW
+}
+
+rule AcmeNetworkAdminPermissionSystem {
+  description: "can READ the system registries"
+  participant: "ANY"
+  operation: READ
+  resource: "org.hyperledger.composer.system.**"
+  action: ALLOW  
+}
+
+//Granted access to john to create an aircraft
+rule AcmeNetworkAdminPermissionCreator {
+    description: "Grant business network administrators full access to system resources"
+    participant: "org.acme.airline.participant.ACMENetworkAdmin"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.AddAsset"
+    action: ALLOW
+}
+
+rule AcmeNetworkAdminPermissionAcme {
+    description: "Grant business network administrators full access to system resources"
+    participant: "org.acme.airline.participant.ACMENetworkAdmin"
+    operation: ALL
+    resource: "org.acme.airline.**"
+    action: ALLOW
+}
+
+//To make any change to the assets you need access to HistorianRecord
+rule AcmeParticipantPermissionHistorian {
+  description: "can write HistorianRecord to the Historian"
+  participant: "org.acme.airline.participant.*"
+  operation: CREATE
+  resource: "org.hyperledger.composer.system.HistorianRecord"
+  action: ALLOW  
+}
+
+// #3.2 Needed for Creating the "CreateFlight" transaction
+// Only employees @ ACME can execute this transaction
+rule ACMEPersonnelPermission {
+  description: "only ACME personnel can create a flight"
+  participant: "org.acme.airline.participant.ACMEPersonnel"
+  operation: CREATE
+  resource: "org.acme.airline.**"
+  transaction: "org.acme.airline.flight.CreateFlight"
+  action: ALLOW
 }
